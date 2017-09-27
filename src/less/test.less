@@ -1,0 +1,135 @@
+@color-white: #fff;
+//seleters
+@my-selecter: banner;
+@{my-selecter}{
+    font-size: 14px;
+}
+//URLs
+@img-url: "../img";
+body {
+    .main {
+        background: url('@{img-url}/app-store-icon.png');
+        height: 200px;
+        width: 300px;
+    }
+}
+@css: '../less';
+@import '@{css}/define.less';
+.main {
+    font-size: @font-14;
+}
+//properties
+@color: color;
+.main {
+    @{color}:red;
+
+}
+//第二大块Mixins
+#a,
+.b {
+    color: black;
+}
+.c {
+    #a();
+}
+.d {
+    .b();
+}
+.f {
+    .b
+}
+//以上样式会产生重复代码不可取知道就行
+#outer {
+    .inner {
+        font-weight: bolder;
+    }
+}
+.wapper {
+    //#outer > .inner;
+    //#outer > .inner();
+    //#outer .inner;
+    //#outer.inner;
+    #outer.inner();
+}
+//important
+.foo(@bg: #000,
+@color: #fafafa) {
+    background-color: @bg;
+    color: @color;
+}
+.unimportant {
+    .foo();
+}
+.important {
+    .foo()!important;
+}
+//Mixins as Functions
+.minxins() {
+    @width: 100%;
+    @color: #555;
+}
+.caller {
+    .minxins();
+    width: @width;
+    color: @color;
+}
+
+//mixins  act function
+.average(@x,@y){
+	@average:((@x + @y)/2);
+}
+div{
+	.average(14px,14px);
+	width: @average;
+}
+
+//loops
+.loop(@counter) when (@counter > 0) {
+  .loop((@counter - 1));    // next iteration
+  width: (10px * @counter); // code for each iteration
+}
+
+div {
+  .loop(5); // launch the loop
+}
+
+//recursive loop (迭代循环)
+.gerate-colums(4);
+.gerate-colums(@n,@i:1) when (@i <= @n){
+    .gerate-colums-@{i}{
+        width: (@i * 100% / @n);
+    }
+    .gerate-colums(@n, (@i + 1));
+}
+
+//comma
+
+.mixin(){
+    box-shadow+:inset 0 0 10px #555; 
+}
+.myClass{
+    .mixin();
+    box-shadow+:0 0 20px black; 
+}
+
+//space
+.mixin-space(){
+    transform+_:scale(2);
+}
+.myClass{
+    .mixin-space();
+    transform+_:rotate(45deg);
+}
+
+//&用法
+.button{
+    &-ok{
+        background-color: #222;
+    };
+    &-cancle{
+        background-color: #000;
+    };
+    &-custom{
+        background-color: red;
+    }
+}
